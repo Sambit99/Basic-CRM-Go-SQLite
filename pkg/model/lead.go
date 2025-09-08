@@ -1,6 +1,8 @@
 package model
 
 import (
+	"errors"
+
 	"github.com/Sambit99/Basic-CRM-Go-SQLite/pkg/config"
 	"gorm.io/gorm"
 )
@@ -24,4 +26,17 @@ func GetLeads() (leads []Lead, err error) {
 	db.Find(&leads)
 
 	return leads, nil
+}
+
+func GetLead(id int) (lead Lead, err error) {
+	result := db.Find(&lead).Where("ID=?", id)
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return Lead{}, nil // not found, return zero value
+		}
+		return Lead{}, result.Error // real error
+	}
+
+	return lead, nil
 }
