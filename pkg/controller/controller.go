@@ -61,3 +61,30 @@ func GetLead(c *fiber.Ctx) error {
 		"data":   lead,
 	})
 }
+
+func NewLead(c *fiber.Ctx) error {
+	var lead model.Lead
+
+	if err := c.BodyParser(&lead); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "failed",
+			"message": "Error while parsing body",
+			"error":   err.Error(),
+		})
+	}
+
+	newLead, err := model.NewLead(lead)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "failed",
+			"message": "Error while creating New Lead",
+			"error":   err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"status": "success",
+		"data":   newLead,
+	})
+}
