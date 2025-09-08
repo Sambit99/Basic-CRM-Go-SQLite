@@ -19,3 +19,9 @@ func init() {
 	config.ConnectDB()
 	db = config.GetDB()
 }
+
+func GetLeads() (leads []Lead, err error) {
+	db.Find(&leads)
+
+	return leads, nil
+}
