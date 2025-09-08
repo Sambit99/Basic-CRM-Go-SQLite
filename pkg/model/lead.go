@@ -40,3 +40,30 @@ func GetLead(id int) (lead Lead, err error) {
 
 	return lead, nil
 }
+
+func NewLead(lead Lead) (newLead Lead, err error) {
+
+	if lead.Name != "" {
+		newLead.Name = lead.Name
+	}
+
+	if lead.Company != "" {
+		newLead.Company = lead.Company
+	}
+
+	if lead.Email != "" {
+		newLead.Email = lead.Email
+	}
+
+	if lead.Phone != "" {
+		newLead.Phone = lead.Phone
+	}
+
+	result := db.Create(&newLead)
+
+	if result.Error != nil {
+		return Lead{}, result.Error
+	}
+
+	return newLead, nil
+}
