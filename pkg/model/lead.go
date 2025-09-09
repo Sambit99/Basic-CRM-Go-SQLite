@@ -67,3 +67,16 @@ func NewLead(lead Lead) (newLead Lead, err error) {
 
 	return newLead, nil
 }
+
+func DeleteLead(id int) (lead Lead, err error) {
+	result := db.Where("ID=?", id).Delete(&lead)
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return Lead{}, nil // not found, return zero value
+		}
+		return Lead{}, result.Error // real error
+	}
+
+	return lead, nil
+}
