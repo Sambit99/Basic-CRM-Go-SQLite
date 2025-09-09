@@ -88,3 +88,30 @@ func NewLead(c *fiber.Ctx) error {
 		"data":   newLead,
 	})
 }
+
+func DeleteLead(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	leadId, err := strconv.ParseInt(id, 0, 0)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "failed",
+			"message": "Error while parsing ID",
+		})
+	}
+
+	__, err := model.DeleteLead(int(leadId))
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "failed",
+			"message": "Error deleting lead",
+		})
+	}
+
+	return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+		"status":  "success",
+		"message": "Lead Deleted Successfully",
+	})
+}
