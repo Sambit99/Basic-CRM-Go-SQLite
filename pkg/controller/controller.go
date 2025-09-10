@@ -101,12 +101,12 @@ func DeleteLead(c *fiber.Ctx) error {
 		})
 	}
 
-	__, err := model.DeleteLead(int(leadId))
+	_, err = model.DeleteLead(int(leadId))
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"status":  "failed",
-			"message": "Error deleting lead",
+			"message": err.Error(),
 		})
 	}
 
