@@ -73,7 +73,7 @@ func DeleteLead(id int) (lead Lead, err error) {
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return Lead{}, nil // not found, return zero value
+			return Lead{}, errors.New("Lead not found") // not found, return zero value
 		}
 		return Lead{}, result.Error // real error
 	}
